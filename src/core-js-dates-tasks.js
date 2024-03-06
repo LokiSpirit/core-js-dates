@@ -179,8 +179,17 @@ function formatDate(date) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  const monthEnd = new Date(year, month, 0).getDate();
+  let next;
+  let count = 0;
+  let i = 1;
+  while (i <= monthEnd) {
+    next = new Date(year, month - 1, i);
+    count += next.getDay() === 0 || next.getDay() === 6 ? 1 : 0;
+    i += 1;
+  }
+  return count;
 }
 
 /**
@@ -196,8 +205,13 @@ function getCountWeekendsInMonth(/* month, year */) {
  * Date(2024, 0, 31) => 5
  * Date(2024, 1, 23) => 8
  */
-function getWeekNumberByDate(/* date */) {
-  throw new Error('Not implemented');
+function getWeekNumberByDate(date) {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const day = firstDayOfYear.getDay();
+  const msOfFirstWeek = ((7 - day) % 7) * 24 * 3600 * 1000;
+  const diff = date.getTime() - new Date(date.getFullYear(), 0, 1).getTime();
+  if (diff <= msOfFirstWeek) return 1;
+  return Math.floor((diff - msOfFirstWeek) / (7 * 24 * 3600 * 1000)) + 2;
 }
 
 /**
@@ -211,8 +225,20 @@ function getWeekNumberByDate(/* date */) {
  * Date(2024, 0, 13) => Date(2024, 8, 13)
  * Date(2023, 1, 1) => Date(2023, 9, 13)
  */
-function getNextFridayThe13th(/* date */) {
-  throw new Error('Not implemented');
+function getNextFridayThe13th(date) {
+  let i = date.getMonth();
+  if (date.getDate() < 13) {
+    date.setDate(13);
+    if (date.getDay() === 5) return date;
+  }
+  i += 1;
+  date.setMonth(i);
+  date.setDate(13);
+  while (date.getDay() !== 5) {
+    i += 1;
+    date.setMonth(i);
+  }
+  return date;
 }
 
 /**
@@ -226,8 +252,17 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  switch (true) {
+    case date.getMonth() < 3:
+      return 1;
+    case date.getMonth() < 6:
+      return 2;
+    case date.getMonth() < 9:
+      return 3;
+    default:
+      return 4;
+  }
 }
 
 /**
