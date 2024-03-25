@@ -78,10 +78,11 @@ function getDayName(date) {
  * Date('2024-02-16T00:00:00Z') => Date('2024-02-23T00:00:00Z')
  */
 function getNextFriday(date) {
-  if (5 - date.getDay() === -1) date.setDate(date.getDate() + 6);
-  else if (5 - date.getDay() === 0) date.setDate(date.getDate() + 7);
-  else date.setDate(date.getDate() + (5 - date.getDay()));
-  return date;
+  const res = date;
+  if (5 - res.getDay() === -1) res.setDate(res.getDate() + 6);
+  else if (5 - res.getDay() === 0) res.setDate(res.getDate() + 7);
+  else res.setDate(res.getDate() + (5 - res.getDay()));
+  return res;
 }
 
 /**
